@@ -1,0 +1,16 @@
+
+Set theoretical problem
+
+& ... set intersection  (i as function)
+- ... set difference    (d as function)
+
+To show:
+
+X1 & (X2 - X3) = (X1 & X2) - X3
+
+This is done via the "in"-predicate
+
+
+A x1. A x2. A y. (in(y,d(x1,x2)) <-> (in(y,x1) & ~in(y,x2)));
+A x1. A x2. A y. (in(y,i(x1,x2)) <-> (in(y,x1) & in(y,x2)));
+~A x1. A x2. A x3. A y. (in(y,i(x1,d(x2,x3))) <-> in(y,d(i(x1,x2),x3)))

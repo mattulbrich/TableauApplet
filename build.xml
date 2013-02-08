@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--!DOCTYPE project PUBLIC "-//ANT//DTD project//EN" "project.dtd"-->
+
+<project name="Tablet" default="build" basedir=".">
+ 
+  <target name="init">
+    <mkdir dir="classes"/>
+    <mkdir dir="genSrc"/>
+  </target>
+
+  <target name="build" depends="init, javacc, copy" description="compiles the sources">
+    <javac srcdir="genSrc" destdir="classes" debug="${compile.debug}" sourcepath="genSrc:src"/>  	
+    <javac srcdir="src" destdir="classes" debug="${compile.debug}" excludes="de/uka/ilkd/tablet/FormulaTest.java"/>
+  </target>
+	
+  <target name="javacc" depends="init">
+    <exec executable="javacc">
+    	<arg value="-OUTPUT_DIRECTORY=genSrc/de/uka/ilkd/tablet/"/>
+    	<arg value="src/de/uka/ilkd/tablet/FormulaParser.jj"/>
+    </exec>
+  </target>
+	
+  <target name="copy" depends="init">
+    <copy todir="classes">
+      <fileset dir="src" includes="**/*.gif"/>
+      <fileset dir="src" includes="**/*.latex"/>
+    </copy>
+  </target>
+
+  <target name="jar" depends="build" description="creates the jar file">
+    <jar jarfile="tablet.jar" basedir="classes" manifest="MANIFEST.MF"/>
+    <signjar jar="tablet.jar" alias="mykey" storepass="keystore"/>
+  </target>
+
+  <target name="run" depends="build" description="runs the applet locally">
+    <java classname="de.uka.ilkd.tablet.TableauApplet" classpath="classes" fork="yes">
+      <sysproperty key="tablet.showancestor" value="true" />
+      <sysproperty key="tablet.allowautorun" value="true" />
+      <sysproperty key="tablet.allowunification" value="true" />
+    </java>
+  </target>
+	
+  <target name="srczip">
+    <zip destfile="tabletSrc.zip" baseDir="src" />
+  </target>
+
+  <target name="clean">
+    <delete dir="classes" />
+    <delete dir="genSrc" />
+  </target>
+
+</project>

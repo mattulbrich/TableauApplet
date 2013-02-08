@@ -1,0 +1,4 @@
+A x. A y. A z. (r(x,y) -> r(y,z) -> r(x,z));
+A x. A y. (r(x,y) -> r(y,x));
+A x. E y. r(x,y);
+~A x. r(x,x)

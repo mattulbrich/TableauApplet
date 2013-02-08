@@ -1,0 +1,12 @@
+A x. (house(x) -> cat(x)) ;
+A x. (gazes(x) -> suitpet(x)) ;
+A x. (detest(x) -> avoid(x)) ;
+A x. (carn(x) -> prowler(x)) ;
+A x. (cat(x) -> mousekill(x)) ;
+A x. (takes(x) -> house(x)) ;
+A x. (kangoo(x) -> ~suitpet(x)) ;
+A x. (mousekill(x) -> carn(x)) ;
+A x. (~takes(x) -> detest(x)) ;
+A x. (prowler(x) -> gazes(x)) ;
+
+~A x. (kangoo(x) -> avoid(x))

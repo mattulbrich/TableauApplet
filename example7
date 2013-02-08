@@ -1,0 +1,6 @@
+Symmetrisch, transitiv und endlos ==> reflexiv
+
+A x. A y. (p(x,y) -> p(y,x));
+A x. E y. p(x,y);
+A x. A y. A z. (p(x,y) & p(y,z) -> p(x,z));
+~A x. p(x,x)

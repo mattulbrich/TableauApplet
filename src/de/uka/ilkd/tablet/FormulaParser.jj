@@ -1,0 +1,173 @@
+
+options {
+	STATIC = false;
+}
+
+PARSER_BEGIN(FormulaParser)
+package de.uka.ilkd.tablet;
+
+import java.util.*;
+
+public class FormulaParser {
+
+  boolean fullMode;
+
+  public Formula Formula(boolean fullMode) throws ParseException {
+  	this.fullMode = fullMode;
+  	return EquivalenceFormula();
+  }
+
+}
+
+PARSER_END(FormulaParser)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+}
+
+TOKEN :
+{
+  <SKOLEM: "sk" ( ["0"-"9"] )+>
+| <FREEVAR: "X" ( ["0"-"9"] )+>
+| <FORALL: "A">
+| <EXISTS: "E">
+| <AND: "&">
+| <LEFTPAREN: "(">
+| <RIGHTPAREN: ")">
+| <COMMA: ",">
+| <SEMICOLON: ";">
+| <OR: "|">
+| <NOT: "~">
+| <IMPLIES: "->">
+| <EQUIV: "<->">
+| <DOT: ".">
+| <EQUALS: "=">
+| <ID: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )*>
+| <OTHER: ["\u0000"-"\uFFFF"]>
+}
+
+
+Formula[] Formulae():
+{ Formula f;
+  List<Formula> list = new ArrayList<Formula>();
+}
+{
+	f = EquivalenceFormula() { list.add(f); }
+	( LOOKAHEAD(2)
+		";" f = EquivalenceFormula() { list.add(f); }
+	)*
+	( ";" )? <EOF>
+		{ return list.toArray(new Formula[0]); }
+}
+
+Formula BaseFormula():
+{ Formula f; }
+{
+	( f = QuantifiedFormula() 
+	| f = NegatedFormula()
+	| f = PredicateOrTerm()
+	| "(" f = EquivalenceFormula() ")"
+	) { return f; }
+}
+
+Formula QuantifiedFormula():
+{ Formula f; 
+  QuantorFormula.Quantor q;
+  Token var;
+}
+{
+	(
+	 "A" { q = QuantorFormula.Quantor.FORALL; }
+	|
+	 "E" { q = QuantorFormula.Quantor.EXISTS; }
+	)
+	
+	var = <ID>
+	
+	"."
+	
+	f = BaseFormula()
+		{ return new QuantorFormula(q, var.image, f); }
+}
+
+Formula NegatedFormula():
+{ Formula f; }
+{
+	"~" f=BaseFormula()
+	{ return new NotFormula(f); }
+}
+
+Formula PredicateOrTerm():
+{ Token id; 
+  List<Formula> formulas=new ArrayList<Formula>();
+  Formula f; }
+{
+	( id = <ID> | id = <SKOLEM> { if(!fullMode) throw new ParseException("Skolem (sk...) and free variables (X...) are not allowed: "+id.image); } )
+	( "("
+		f = EquivalenceFormula() { formulas.add(f); }
+		( ","
+			f = EquivalenceFormula() { formulas.add(f); }
+		)*	
+	  ")"
+	)?
+	{ 
+		if(formulas.isEmpty())
+			return new IdFormula(id.image);
+		else {
+			Formula[] formArray= formulas.toArray(new Formula[0]);
+			return new Application(id.image, formArray);
+		}
+	}
+	|
+	 id = <FREEVAR>	
+		{ if(fullMode)
+			return new IdFormula(id.image);
+		  else
+		  	throw new ParseException("Skolem (sk...) and free variables (X...) are not allowed: "+id.image);
+		}
+
+}
+
+Formula EquivalenceFormula():
+{ Formula f, g; }
+{
+	f = ImplicationFormula() ( "<->" g = EquivalenceFormula() { f=new BinopFormula(BinopFormula.Operator.EQUIV,f,g); } )?
+	{ return f; }
+}
+
+Formula ImplicationFormula():
+{ Formula f, g; }
+{
+	f = DisjunctionFormula() ( "->" g = ImplicationFormula() { f=new BinopFormula(BinopFormula.Operator.IMPL,f,g); } )?
+	{ return f; }
+}
+
+Formula DisjunctionFormula():
+{ Formula f, g; }
+{
+	f = ConjunctionFormula() ( "|" g = DisjunctionFormula() { f=new BinopFormula(BinopFormula.Operator.OR,f,g); })?
+	{ return f; }
+}
+
+Formula ConjunctionFormula():
+{ Formula f, g; }
+{
+	f = BaseFormula() ( "&" g = ConjunctionFormula() { f=new BinopFormula(BinopFormula.Operator.AND,f,g); })?
+	{ return f; }
+}
+
+Instantiation Instantiation() : 
+{  
+	Token t;
+	Formula f;
+	Instantiation inst;
+	fullMode = true;
+}
+{
+	t = <FREEVAR> "=" f=EquivalenceFormula() <EOF>
+		{ return new Instantiation(t.image, f); }
+}

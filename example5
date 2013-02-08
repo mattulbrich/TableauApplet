@@ -1,0 +1,14 @@
+Thats the following riddle:
+Gegeben seien die folgenden Aussagen:
+* Politiker moegen niemanden, der knausrig ist.
+* Jeder Politiker mag eine Firma.
+* Es gibt einen Politiker.
+==> Es gibt eine Firma, die nicht knausrig ist.
+
+A x. A y. (p(x) & kn(y) -> ~ma(x,y)); 
+A x. (p(x) -> E y. (fi(y) & ma(x,y))); 
+E x. p(x) ; 
+
+~E x. (fi(x) & ~kn(x))
+
+

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="**/CVS" kind="src" path="src"/>
+	<classpathentry kind="src" path="genSrc"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3.8.1"/>
+	<classpathentry kind="lib" path="org.sat4j.core.jar" sourcepath="org.sat4j.core-src.jar"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

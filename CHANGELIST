@@ -1,0 +1,23 @@
+No 17 (11-02-25)
+    GUI is now in its own panel to allow for scaling in non-applet mode.
+
+No 16 (09-02-10)
+    Simple Automatic Theorem Prover mode added (works on small problems)
+
+No 15 (09-01-08)
+    Better latex export (absolute coordinates instead of relative)
+
+No 14 (09-01-07)
+    Variables are added as paramters to skolem functions only once if needed.
+
+No 13 (08-11-21)
+    Latex export using the tikzpicture environment supported
+
+No 12 (08-01-31)
+    Bugfix: Colliding substitutions no longer allowed
+
+No 10 (07-12-05)
+    Allowing png export and printing also for the applet. Tableaux are scaled when printing
+
+No 7 (07-11-23)
+    Significantly better treatment of implications and double negations

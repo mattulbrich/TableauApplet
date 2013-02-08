@@ -1,0 +1,10 @@
+%%
+%% Automatically generated tableau code
+%%
+%%
+%% You need to
+%%    \usepackage{tikz}
+%
+\newcommand{\tableauLabel}[1]{\hbox to 0pt{\tiny #1}}
+\newcommand{\tableauClose}{{\Large \bf *}}
+%

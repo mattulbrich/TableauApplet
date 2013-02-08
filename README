@@ -1,0 +1,21 @@
+
+The following parameters can be set when calling the applet from
+the command line.
+
+-Dtablet.showancestor=[true|false]  default true
+	list the ancestor node in the display or no
+
+-Dtablet.allowautorun=[true|false]  default false
+	allow automatic proving
+	[switched off for didactic reasons]
+
+-Dtablet.absolutetex=[true|false]  default ...
+	position TeX export absolute or relative.
+
+-Dtablet.fontsize=<number>  defualt 
+	font size to be used to show nodes
+
+-Dtablet.allowunification=[true|false]  default false
+	allow the unification of formulas when drag'n'dropping
+	nodes. [switched off for didactic reasons] 
+
