@@ -364,7 +364,7 @@ Printable {
 						((Timer)e.getSource()).stop();
 						comments.setText("AP finished");
 						automaticProve.addHistoryTo(history);
-						automaticProve = null;
+						automaticProveThread = null;
 					}
 				}};
 				new Timer(1000, action).start();

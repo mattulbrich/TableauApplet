@@ -170,7 +170,7 @@ public interface HistoryItem {
 		public void undo(Node root) {
 			for (int i = size()-1; i >= 0; i--) {
 				get(i).undo(root);
-				System.out.println(" +UNDO " + get(i));
+//				System.out.println(" +UNDO " + get(i));
 			}
 		} 
 		

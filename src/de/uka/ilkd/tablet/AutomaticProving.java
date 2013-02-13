@@ -59,6 +59,12 @@ public class AutomaticProving implements Runnable {
 				}
 				
 				ChoicePoint choicePoint = (ChoicePoint) history.peek();
+				if(choicePoint == null) {
+					// mark unsuccessfull
+					history.undoAll();
+					return;
+				}
+				
 				ChoiceItem item = choicePoint.take();
 				while(item == null) {
 					history.take();
