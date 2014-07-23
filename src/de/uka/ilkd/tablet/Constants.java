@@ -137,6 +137,9 @@ public class Constants {
         throw new Error();
     }
 
-
+    public static void resetCounters() {
+    	skolemCounter = 0;
+    	freeVarCounter = 0;
+    }
 
 }

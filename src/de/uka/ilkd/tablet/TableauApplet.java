@@ -322,8 +322,6 @@ public class TableauApplet extends javax.swing.JApplet {
     /**
 	 * Open a formula dialog and let the user enter a new formula.
 	 * 
-	 * TODO: Idea: remember last formula and let it pop up again.
-	 * 
 	 * @param evt
 	 *            the event
 	 */
@@ -334,15 +332,15 @@ public class TableauApplet extends javax.swing.JApplet {
         while (fd.isOK()) {
             fd.unsetOK();
             lastInput = fd.getInput();
-            Reader r = new StringReader(lastInput );
+            Reader r = new StringReader(lastInput);
             FormulaParser parser = new FormulaParser(r);
             try {
                 Formula f[] = parser.Formulae();
                 tableauComponent.init(f);
             } catch(ParseException ex) {
-            	fd.go(ex.currentToken.beginLine, ex.currentToken.beginColumn);
-            	JOptionPane.showMessageDialog(null, ex.getMessage(), "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                fd.go(ex.currentToken.beginLine, ex.currentToken.beginColumn);
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error",
+                       JOptionPane.ERROR_MESSAGE);
                 fd.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();

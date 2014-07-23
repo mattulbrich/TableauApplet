@@ -29,6 +29,11 @@ SKIP :
 | "\r"
 }
 
+SKIP :
+{
+  <SINGLE_LINE_COMMENT: "#" (~["\n","\r"])* >
+}
+
 TOKEN :
 {
   <SKOLEM: "sk" ( ["0"-"9"] )+>

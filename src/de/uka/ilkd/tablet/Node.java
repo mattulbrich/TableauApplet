@@ -459,6 +459,10 @@ public class Node implements Iterable<Node>, Comparable<Node> {
 	public Node getReason() {
 		return reason;
 	}
+
+	public static void resetCounter() {
+		overAllCounter = 0;
+    }
 	
 
 

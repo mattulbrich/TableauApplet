@@ -69,6 +69,10 @@ Printable {
 	 *                array to start with
 	 */
 	public void init(Formula forms[]) {
+		
+		Node.resetCounter();
+		Constants.resetCounters();
+		
 		root = new Node(0, forms[0], null, null);
 		nodeUI = new NodeUI(new FontMeasurer((Graphics2D) getGraphics()), root);
 
