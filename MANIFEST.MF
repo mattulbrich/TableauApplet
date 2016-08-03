@@ -1,1 +1,2 @@
 Main-Class: de.uka.ilkd.tablet.TableauApplet
+Permissions: all-permissions

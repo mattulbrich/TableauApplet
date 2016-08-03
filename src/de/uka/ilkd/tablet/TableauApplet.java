@@ -1,6 +1,6 @@
 /* This file is part of TableauApplet.
  *
- * It has been written by Mattias Ulbrich <ulbrich@kit.edu>, 
+ * It has been written by Mattias Ulbrich <ulbrich@kit.edu>,
  * Karlsruhe Institute of Technology, Germany.
  *
  * TableauApplet is free software: you can redistribute it and/or modify
@@ -67,11 +67,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 @SuppressWarnings("serial")
 public class TableauApplet extends javax.swing.JApplet {
 
-    
+
     /**
 	 * Version constant
 	 */
-    private static final String BUILD = "17";
+    private static final String BUILD = "18";
 
     /*
 	 * UI Elements
@@ -93,51 +93,51 @@ public class TableauApplet extends javax.swing.JApplet {
 
     private String lastInput = "";
 
-    private ModelSearch modelSearchThread;
+//    private ModelSearch modelSearchThread;
 
-    private JComponent guiPanel;
-    
+    private final JComponent guiPanel;
+
     /**
      * static flag whether to indicate ancestors in nodes
      */
     public static boolean SHOW_ANCESTORS = true;
-    
+
     /**
 	 * static flag whether to allow automatic proofs
 	 */
     public static boolean ALLOW_AUTORUN = false;
-    
-    
+
+
     /**
      * static flag whether to allow counter example search
      */
     public static final boolean ALLOW_MODELSEARCH = false;
-    
-    
+
+
     /**
-	 * static flag whether whether to place tex elements 
+	 * static flag whether whether to place tex elements
 	 * absolute rather than relative
 	 */
     public static boolean ABSOLUTE_TEX_EXPORT = true;
 
     /**
      * Main method to display this JApplet inside a new JFrame.
-     * 
+     *
      * First read and set system properties instead of applet parameters.
      */
     public static void main(String[] args) {
-    	
+
         // set system properties
         SHOW_ANCESTORS = Boolean.parseBoolean(System.getProperty("tablet.showancestor", Boolean.toString(SHOW_ANCESTORS)));
         ALLOW_AUTORUN = Boolean.parseBoolean(System.getProperty("tablet.allowautorun", Boolean.toString(ALLOW_AUTORUN)));
         ABSOLUTE_TEX_EXPORT = Boolean.parseBoolean(System.getProperty("tablet.absolutetex", Boolean.toString(ABSOLUTE_TEX_EXPORT)));
         TableauPane.FONT_SIZE = Integer.getInteger("tablet.fontsize", TableauPane.FONT_SIZE);
         TableauPane.ALLOW_UNIFICATION = Boolean.parseBoolean(System.getProperty("tablet.allowunification", Boolean.toString(TableauPane.ALLOW_UNIFICATION)));
-        
+
         JFrame frame = new JFrame("Tableau Proof");
         TableauApplet inst = new TableauApplet();
         frame.getContentPane().add(inst.guiPanel);
-        
+
         frame.setSize(600,400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -148,10 +148,10 @@ public class TableauApplet extends javax.swing.JApplet {
 	 */
     public TableauApplet() {
         super();
-        guiPanel = makeGUIPanel(); 
+        guiPanel = makeGUIPanel();
     }
 
-    /* 
+    /*
      * read and set applet parameters
      */
     @Override
@@ -160,29 +160,29 @@ public class TableauApplet extends javax.swing.JApplet {
         if("false".equals(showAnces)) {
             SHOW_ANCESTORS = false;
         }
-        
+
         String autorun = getParameter("allowautorun");
         if("true".equals(autorun)) {
             ALLOW_AUTORUN = true;
             jAuto.setEnabled(ALLOW_AUTORUN);
         }
-        
+
         String allowunification = getParameter("allowunification");
         if("true".equals(allowunification)) {
             TableauPane.ALLOW_UNIFICATION = true;
         }
-        
+
         String absolutetx = getParameter("absolutetex");
         if("false".equals(absolutetx)) {
         	ABSOLUTE_TEX_EXPORT = false;
         }
-        
+
         try {
             TableauPane.FONT_SIZE = Integer.parseInt(getParameter("fontsize"));
         } catch(Exception ex) {
             // okay, just don't set it
         }
-        
+
         getContentPane().add(guiPanel);
     }
 
@@ -319,10 +319,10 @@ public class TableauApplet extends javax.swing.JApplet {
             {
                 jComment = new JLabel();
                 result.add(jComment, BorderLayout.SOUTH);
-                jComment.setText("Visualisation of the tableau calculus - Mattias Ulbrich 2007 - #"+BUILD);
+                jComment.setText("Visualisation of the tableau calculus - Mattias Ulbrich 2007-2016 - #"+BUILD);
             }
             {
-                jScrollPane = new JScrollPane();                
+                jScrollPane = new JScrollPane();
                 jScrollPane.getVerticalScrollBar().setUnitIncrement(20);
                 result.add(jScrollPane, BorderLayout.CENTER);
                 {
@@ -330,7 +330,7 @@ public class TableauApplet extends javax.swing.JApplet {
                     jScrollPane.setViewportView(tableauComponent);
                 }
             }
-            
+
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -340,7 +340,7 @@ public class TableauApplet extends javax.swing.JApplet {
 
     /**
 	 * Open a formula dialog and let the user enter a new formula.
-	 * 
+	 *
 	 * @param evt
 	 *            the event
 	 */
@@ -372,7 +372,7 @@ public class TableauApplet extends javax.swing.JApplet {
 
     /**
 	 * Act if the unicode button has been pressed.
-	 * 
+	 *
 	 * @param evt
 	 *            the evt, not needed
 	 */
@@ -388,7 +388,7 @@ public class TableauApplet extends javax.swing.JApplet {
 
     /**
 	 * Restart applet with an instance of the sample formula.
-	 * 
+	 *
 	 * @param evt
 	 *            the evt, not needed
 	 */
@@ -403,18 +403,19 @@ public class TableauApplet extends javax.swing.JApplet {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     /**
 	 * Open the variabel instantiation dialog
-	 * 
+	 *
 	 * @param evt
 	 *            the evt, not needed
 	 */
     private void jInstanceActionPerformed(ActionEvent evt) {
         String assign = JOptionPane.showInputDialog("Enter the instantiation similar to X1 = f(g(X2),c)");
-        if(assign == null)
-            return;
-        
+        if(assign == null) {
+	        return;
+        }
+
         FormulaParser parser = new FormulaParser(new StringReader(assign));
         try {
             Instantiation inst = parser.Instantiation();
@@ -427,10 +428,10 @@ public class TableauApplet extends javax.swing.JApplet {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     /**
 	 * initiate automatic proofing. delegated to the {@link #tableauComponent}.
-	 * 
+	 *
 	 * @param evt
 	 *            the evt
 	 * @see TableauPane#automaticProve()
@@ -438,21 +439,21 @@ public class TableauApplet extends javax.swing.JApplet {
     private void jAutoActionPerformed(ActionEvent evt) {
         tableauComponent.automaticProve();
     }
-    
+
     protected void jModelSearchActionPerformed(ActionEvent e) {
-        if(modelSearchThread == null || !modelSearchThread.isAlive()) {
-            int bound = Integer.parseInt(JOptionPane.showInputDialog(
-            "Bound for the size of models to consider?"));
-            modelSearchThread = new ModelSearch(lastInput, bound);
-            modelSearchThread.run();
-        } else {
-            modelSearchThread.interrupt();
-        }
+//        if(modelSearchThread == null || !modelSearchThread.isAlive()) {
+//            int bound = Integer.parseInt(JOptionPane.showInputDialog(
+//            "Bound for the size of models to consider?"));
+//            modelSearchThread = new ModelSearch(lastInput, bound);
+//            modelSearchThread.run();
+//        } else {
+//            modelSearchThread.interrupt();
+//        }
     }
-    
+
     /**
 	 * open the export file chooser and save current view as PNG, GIF or JPG.
-	 * 
+	 *
 	 * @param evt
 	 *            the evt
 	 */
@@ -466,8 +467,9 @@ public class TableauApplet extends javax.swing.JApplet {
             if(jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                 File outFile = jfc.getSelectedFile();
                 Dimension d = tableauComponent.getOptimalSize();
-                if(d == null)
-                	throw new IllegalStateException("The tableau is empty - cannot export");
+                if(d == null) {
+	                throw new IllegalStateException("The tableau is empty - cannot export");
+                }
                 BufferedImage im = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
                 Graphics g = im.getGraphics();
                 g.setColor(Color.white);
@@ -483,15 +485,15 @@ public class TableauApplet extends javax.swing.JApplet {
             }
         } catch (Exception e) {
         	e.printStackTrace();
-            JOptionPane.showMessageDialog(null, 
-                    e.toString(), 
+            JOptionPane.showMessageDialog(null,
+                    e.toString(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
-    } 
-    
+    }
+
     /**
 	 * Export a latex .tex file.
-	 * 
+	 *
 	 * @param evt
 	 *            the evt, ignored
 	 */
@@ -509,19 +511,20 @@ public class TableauApplet extends javax.swing.JApplet {
                 fw.close();
             }
     	} catch (Exception e) {
-            JOptionPane.showMessageDialog(null, 
-                    e.toString(), 
+            JOptionPane.showMessageDialog(null,
+                    e.toString(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     /*
      * open a resource and paste its text to a writer.
      */
     private void catResource(Writer w, String resourceName) throws IOException {
 		URL url = getClass().getResource(resourceName);
-		if(url == null)
-			throw new FileNotFoundException("Resource not found: " + resourceName);
+		if(url == null) {
+	        throw new FileNotFoundException("Resource not found: " + resourceName);
+        }
 		char buf[] = new char[1024];
 		Reader r = new InputStreamReader(url.openStream());
 		int read = r.read(buf, 0, 1024);
@@ -534,26 +537,26 @@ public class TableauApplet extends javax.swing.JApplet {
 
 	/**
 	 * print to printer
-	 * 
+	 *
 	 * @param evt
 	 *            the evt
 	 */
 	private void jPrintActionPerformed(ActionEvent evt) {
         PrinterJob printJob = PrinterJob.getPrinterJob();
         printJob.setPrintable(tableauComponent);
-        if (printJob.printDialog()) 
+        if (printJob.printDialog())
         {
-           try 
+           try
            {
              printJob.print();
-           } 
+           }
            catch (Exception ex)
            {
              ex.printStackTrace();
            }
         }
     }
-    
+
     /*
      * look up an img. return an error icon on other cases.
      */
@@ -575,7 +578,7 @@ public class TableauApplet extends javax.swing.JApplet {
                 	g.setColor(Color.black);
                     g.drawString("?", x, y+20);
                 }
-                
+
             };
         }
     }

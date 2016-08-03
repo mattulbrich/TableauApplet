@@ -29,7 +29,7 @@
 
   <target name="jar" depends="build" description="creates the jar file">
     <jar jarfile="tablet.jar" basedir="classes" manifest="MANIFEST.MF"/>
-    <signjar jar="tablet.jar" alias="mykey" storepass="keystore"/>
+    <!-- <signjar jar="tablet.jar" alias="mykey" storepass="keystore"/> -->
   </target>
 
   <target name="run" depends="build" description="runs the applet locally">
